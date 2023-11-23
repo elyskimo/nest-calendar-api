@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'user'})
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
   @Column({ length: 500 })
@@ -14,9 +14,8 @@ export class User {
   @Column({ length: 500 })
   lastname: string;
 
-
-//   @Column('text')
-//   description: string;
+  @Column('text')
+  createdAt: string;
 
 //   @Column()
 //   filename: string;
