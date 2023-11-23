@@ -5,11 +5,13 @@ import { UserModule } from './user/user.module';
 import { DatabaseModule } from './database/database.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
+import { EventModule } from './event/event.module';
 
 @Module({
   imports: [
     UserModule, 
     // DatabaseModule
+    EventModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
         host: '127.0.0.1',
@@ -22,7 +24,7 @@ import { User } from './user/user.entity';
             User
         ],
         synchronize: true,
-    })
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
