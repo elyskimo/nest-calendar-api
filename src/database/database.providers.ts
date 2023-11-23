@@ -1,3 +1,4 @@
+import { User } from 'src/user/user.entity';
 import { DataSource } from 'typeorm';
 
 export const databaseProviders = [
@@ -12,7 +13,8 @@ export const databaseProviders = [
         password: '',
         database: 'calendar',
         entities: [
-            __dirname + '/../**/*.entity{.ts,.js}',
+            // __dirname + '/../**/*.entity{.ts,.js}',
+            User
         ],
         synchronize: true,
       });
