@@ -8,12 +8,13 @@ export class UserController {
 
     @Post('/')
     create(@Body() user: UserDto): UserDto {
-        
+        // const { ...user, confirmPassword} = user;
         return this.userService.create(user);
     }
     
     @Get()
-    findAll(): UserDto[] {
-        return this.userService.findAll();
+    async findAll(): Promise<UserDto[]> {
+        const users = await this.userService.findAll();
+        return users;
     }
 }

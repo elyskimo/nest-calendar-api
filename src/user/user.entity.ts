@@ -1,21 +1,21 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity()
+@Entity({ name: 'user'})
 export class User {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn({ type: 'bigint' })
   id: number;
 
+  @Column({ length: 500 })
+  email: string;
+  
   @Column({ length: 500 })
   firstname: string;
 
   @Column({ length: 500 })
   lastname: string;
 
-  @Column({ length: 500 })
-  email: string;
-
-//   @Column('text')
-//   description: string;
+  @Column('text')
+  createdAt: string;
 
 //   @Column()
 //   filename: string;
