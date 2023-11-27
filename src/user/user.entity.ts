@@ -14,7 +14,7 @@ export class User {
   @Column({ length: 500 })
   lastname: string;
 
-  @Column('text')
+  @Column()
   createdAt: string;
 
 //   @Column()
