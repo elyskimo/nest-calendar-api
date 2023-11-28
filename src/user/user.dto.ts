@@ -13,4 +13,6 @@ export class UserDto {
 
     // @IsString()
     lastname: string;
+
+    password: string;
 }

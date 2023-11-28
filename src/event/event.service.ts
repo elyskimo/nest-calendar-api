@@ -29,7 +29,7 @@ export class EventService {
   }
 
   findAll() {
-    return this.eventRepository.find({ relations: ['userId'] });
+    return this.eventRepository.find();
     // return `This action returns all event`;
   }
 
