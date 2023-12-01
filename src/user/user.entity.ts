@@ -18,6 +18,9 @@ export class User {
   @Column()
   password: string;
 
+  @Column()
+  refreshToken: string;
+
   // @Column()
   // salt: string;
 

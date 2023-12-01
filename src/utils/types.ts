@@ -4,7 +4,8 @@ import { DeepPartial } from "typeorm"
 export type CreateUserParams = {
     email: string,
     firstname: string,
-    lastname: string
+    lastname: string,
+    password: string
 }
 
 export type CreateEventParams = {
