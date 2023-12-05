@@ -21,6 +21,7 @@ export class AuthService {
     private jwtService: JwtService
 ) {}
 
+
   async register(createUserDto: CreateUserDto): Promise<any> {
 
     const { email, firstname, lastname, password } = createUserDto;
@@ -52,10 +53,7 @@ export class AuthService {
         throw new UnauthorizedException('Invalid credentials');
     }
 
-
     return await this.updateTokens(user);
-
-    
   }
 
   async validateUser(email: string, password: string): Promise<User | null> {
@@ -76,7 +74,7 @@ export class AuthService {
   async updateTokens(user: User): Promise<{accessToken: string, refreshToken: string, userId: number}> {
     const accessToken = await this.generateAccessToken(user);
     const refreshToken = await this.generateRefreshToken();
-
+    console.log('refresh token old',user.refreshToken,' new - ',refreshToken);
     user.refreshToken = refreshToken;
     await this.userRepository.update(user.id, { refreshToken });
     return {

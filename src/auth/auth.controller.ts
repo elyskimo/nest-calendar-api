@@ -5,18 +5,20 @@ import { UserDto } from 'src/user/user.dto';
 import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import * as cookie from 'cookie';
+import { Public } from 'src/decorators/public.decorator';
 
 
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
-    // @Public()
+    @Public()
     @Post('register')
     register(@Body() signUpDto: UserDto): Promise<void> {
         return this.authService.register(signUpDto);
     }
 
+    @Public()
     @Post('login')
     async login(@Req() req: Request, @Res({ passthrough: false }) res: Response): Promise<any> {
 
@@ -31,19 +33,6 @@ export class AuthController {
         // Return the access token  
         return res.status(200).json({ message: 'User authenticated'});
     }
-
-    // @Post('refresh')
-    // @UseGuards(AuthGuard())
-    // async refresh(@Req() req: Request, @Res() res: Response) {   
-    //     // Use the user from the request (authenticated by the JwtAuthGuard)
-    //     const user = req.user;
-
-    //     // Generate a new access token
-    //     const accessToken = await this.authService.generateAccessToken(user);
-
-    //     // Send the new access token in the response
-    //     return { accessToken };
-    // }
 
     @Post('refresh-token')
     async refreshToken(@Req() req: Request, @Res() res: Response): Promise<any> {
@@ -70,4 +59,7 @@ export class AuthController {
         }
 
     }
+
+    @Post('logout')
+    async logout() {}
 }
