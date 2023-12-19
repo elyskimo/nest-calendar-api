@@ -2,7 +2,6 @@ import { ConflictException, BadRequestException } from '@nestjs/common';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { BcryptService } from './bcrypt.service';
-import { LoginUserDto } from 'src/user/dto/login-user.dto';
 import { User } from 'src/user/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -98,5 +97,23 @@ export class AuthService {
   async generateRefreshToken(): Promise<string> {
     const token = crypto.randomBytes(48).toString('hex');
     return token;
+  }
+
+  async verifyToken(token: string): Promise<User> {
+    console.log("verifyToken");
+    try {
+      const sanitizedToken = token.replace('Bearer ', '');
+      const { email, sub, iat } = this.jwtService.verify(sanitizedToken);
+
+      const user = await this.userRepository.findOneBy({ id: parseInt(sub) });
+
+      if (!user) {
+        throw new UnauthorizedException('User not found');
+      }
+
+      return user;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid token');
+    }
   }
 }

@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Req } from '@nestjs/common';
 import { EventService } from './event.service';
 import { CreateEventDto } from './dto/create-event.dto';
 import { UpdateEventDto } from './dto/update-event.dto';
+import { CustomRequest } from '../interfaces/custom-request.inteface';
 
 @Controller('events')
 export class EventController {
@@ -11,9 +12,10 @@ export class EventController {
   create(@Body() createEventDto: CreateEventDto) {
     return this.eventService.create(createEventDto);
   }
-
+  
   @Get()
-  findAll() {
+  findAll(@Req() req: CustomRequest) {
+    console.log('GET EVENT request',req.user);
     return this.eventService.findAll();
   }
 
