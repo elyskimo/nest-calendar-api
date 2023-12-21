@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
@@ -7,9 +7,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/user.entity';
 import { EventModule } from './event/event.module';
 import { Event } from './event/entities/event.entity';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthMiddleware } from './middleware/auth.middleware';
+import { EventController } from './event/event.controller';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
+    AuthModule,
     UserModule, 
     // DatabaseModule
     EventModule,
@@ -31,4 +37,17 @@ import { Event } from './event/entities/event.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+
+// export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+    .apply(AuthMiddleware)
+    .exclude(
+      { path: 'auth/login', method: RequestMethod.ALL },
+      { path: 'auth/register', method: RequestMethod.ALL },
+      // 'auth/(.*)',
+    )
+    .forRoutes('*');
+  }
+}
