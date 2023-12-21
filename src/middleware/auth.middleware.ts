@@ -11,17 +11,17 @@ export class AuthMiddleware implements NestMiddleware {
   constructor(private readonly authService: AuthService) {}
 
   async use(req: CustomRequest, res: Response, next: NextFunction) {
-    // console.log('REQUEST',req.headers);
+    console.log('MIDDLEWARE is applied');
     const token = req.headers.authorization;
-    console.log('TOKEN',token);
     if (!token) {
-      return res.status(401).json({ message: 'Unauthorized' });
+      return res.status(401).json({ message: 'JWT token not found' });
     }
-    console.log("MIDDLEWARE",token);
     try {
       const user = await this.authService.verifyToken(token);
-      if (!user) return res.status(404).json({ message: 'User not found' })
-      console.log("YEAH",user);
+      if (!user) return res.status(404).json({ message: 'User not found' });
+      console.log('user',user);
+      if (!user.refreshToken) return res.status(401).json({ message: 'Unauthorized' });
+
       req.user = user; // Attach user to the request object
       next();
     } catch (err) {

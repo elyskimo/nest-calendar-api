@@ -55,6 +55,10 @@ export class AuthService {
     return await this.updateTokens(user);
   }
 
+  async logout(userId: number): Promise<void> {
+    await this.userRepository.update(userId, { refreshToken: null });
+  }
+
   async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.userService.findOneByEmail(email);
 

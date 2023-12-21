@@ -6,6 +6,7 @@ import { Request, Response } from 'express';
 import { AuthGuard } from '@nestjs/passport';
 import * as cookie from 'cookie';
 import { Public } from 'src/decorators/public.decorator';
+import { CustomRequest } from 'src/interfaces/custom-request.inteface';
 
 
 @Controller('auth')
@@ -61,5 +62,10 @@ export class AuthController {
     }
 
     @Post('logout')
-    async logout() {}
+    async logout(@Req() req: CustomRequest, @Res() res: Response): Promise<Response> {
+        const userId = req.user.id;
+        console.log('logout',req.user);
+        await this.authService.logout(userId);
+        return res.status(200).json({ message: 'User logged out'});
+    }
 }
